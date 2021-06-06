@@ -1,0 +1,1 @@
+certoraRun spec/harnesses/GoldMinerV2Harness.sol spec/harnesses/DummyERC20A.sol spec/harnesses/DummyERC20B.sol spec/harnesses/DummyGOLN.sol --link GoldMinerV2Harness:GOLN=DummyGOLN --settings -assumeUnwindCond,-enableStorageAnalysis=true,-ciMode=true --verify GoldMinerV2Harness:spec/GoldMinerV2.spec --cache GoldMinerV2 --msg "GoldMinerV2"
