@@ -1,5 +1,5 @@
 {
-  "name": "@luckyswap/core",
+  "name": "@luckyfinance/core",
   "version": "1.4.2",
   "license": "MIT",
   "types": "./types/index.ts",
