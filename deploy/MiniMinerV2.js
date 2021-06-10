@@ -1,4 +1,4 @@
-const { ChainId } = require("@luckyswap/sdk")
+const { ChainId } = require("@luckyfinance/sdk")
 
 
 const GOLN = {

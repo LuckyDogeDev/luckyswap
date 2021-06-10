@@ -52,7 +52,7 @@ contract SmelterGoldVein is Ownable {
         address indexed server,
         address indexed token0,
         uint256 amount0,
-        uint256 amountBENTO,
+        uint256 amountALP,
         uint256 amountGOLN
     );
 

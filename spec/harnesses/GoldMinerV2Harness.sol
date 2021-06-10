@@ -7,8 +7,8 @@ contract GoldMinerV2Harness is GoldMinerV2 {
     ////////////////////////////////////////////////////////////////////////////
     //                         Constructors and inits                         //
     ////////////////////////////////////////////////////////////////////////////
-    constructor(IGoldMiner _MASTER_CHEF, IERC20 _goldnugget, uint256 _MASTER_PID)
-                    GoldMinerV2(_MASTER_CHEF, _goldnugget, _MASTER_PID) public { }
+    constructor(IGoldMiner _GOLD_MINER, IERC20 _goldnugget, uint256 _MASTER_PID)
+                    GoldMinerV2(_GOLD_MINER, _goldnugget, _MASTER_PID) public { }
 
     ////////////////////////////////////////////////////////////////////////////
     //                        Getters for The Internals                       //

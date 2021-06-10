@@ -6,7 +6,6 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
-// AlchemyBench is the coolest bar in town. You come in with some GoldNugget, and leave with more! The longer you stay, the more GoldNugget you get.
 //
 // This contract handles swapping to and from PlatinumNugget, LuckySwap's staking token.
 contract AlchemyBench is ERC20("AlchemyBench", "PLAN"){
@@ -28,7 +27,7 @@ contract AlchemyBench is ERC20("AlchemyBench", "PLAN"){
         // If no PlatinumNugget exists, mint it 1:1 to the amount put in
         if (totalShares == 0 || totalGoldNugget == 0) {
             _mint(msg.sender, _amount);
-        } 
+        }
         // Calculate and mint the amount of PlatinumNugget the GoldNugget is worth. The ratio will change overtime, as PlatinumNugget is burned/minted and GoldNugget deposited + gained from fees / withdrawn.
         else {
             uint256 what = _amount.mul(totalShares).div(totalGoldNugget);

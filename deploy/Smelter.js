@@ -1,4 +1,4 @@
-const { WETH } = require("@luckyswap/sdk")
+const { WETH } = require("@luckyfinance/sdk")
 
 module.exports = async function ({ ethers: { getNamedSigner }, getNamedAccounts, deployments }) {
   const { deploy } = deployments
