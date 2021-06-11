@@ -34,7 +34,7 @@ contract SmelterGoldVein is Ownable {
 
     IUniswapV2Factory private immutable factory;
     //0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac
-    address private immutable bar;
+    address private immutable alchemybench;
     //0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272
     IAlpineWithdraw private immutable alPine;
     //0xF5BCE5077908a1b7370B9ae04AdC565EBd643966
@@ -58,14 +58,14 @@ contract SmelterGoldVein is Ownable {
 
     constructor(
         IUniswapV2Factory _factory,
-        address _bar,
+        address _alchemybench,
         IAlpineWithdraw _alPine,
         address _goldnugget,
         address _weth,
         bytes32 _pairCodeHash
     ) public {
         factory = _factory;
-        bar = _bar;
+        alchemybench = _alchemybench;
         alPine = _alPine;
         goldnugget = _goldnugget;
         weth = _weth;
@@ -76,7 +76,7 @@ contract SmelterGoldVein is Ownable {
         // Checks
         require(
             token != goldnugget && token != weth && token != bridge,
-            "Maker: Invalid bridge"
+            "Smelter: Invalid bridge"
         );
         // Effects
         _bridges[token] = bridge;
@@ -85,7 +85,7 @@ contract SmelterGoldVein is Ownable {
 
     modifier onlyEOA() {
         // Try to make flash-loan exploit harder to do by only allowing externally-owned addresses.
-        require(msg.sender == tx.origin, "Maker: Must use EOA");
+        require(msg.sender == tx.origin, "Smelter: Must use EOA");
         _;
     }
 
@@ -100,13 +100,13 @@ contract SmelterGoldVein is Ownable {
     }
 
     function _convert(IGoldVeinWithdrawFee goldveinPair) private {
-        // update Gold Vein fees for this Maker contract (`feeTo`)
+        // update Gold Vein fees for this Smelter contract (`feeTo`)
         goldveinPair.withdrawFees();
 
         // convert updated Gold Vein balance to Alp shares
         uint256 alpShares = goldveinPair.removeAsset(address(this), goldveinPair.balanceOf(address(this)));
 
-        // convert Alp shares to underlying Gold Vein asset (`token0`) balance (`amount0`) for Maker
+        // convert Alp shares to underlying Gold Vein asset (`token0`) balance (`amount0`) for Smelter
         address token0 = goldveinPair.asset();
         (uint256 amount0, ) = alPine.withdraw(IERC20(token0), address(this), address(this), 0, alpShares);
 
@@ -121,10 +121,10 @@ contract SmelterGoldVein is Ownable {
 
     function _convertStep(address token0, uint256 amount0) private returns (uint256 goldnuggetOut) {
         if (token0 == goldnugget) {
-            IERC20(token0).safeTransfer(bar, amount0);
+            IERC20(token0).safeTransfer(alchemybench, amount0);
             goldnuggetOut = amount0;
         } else if (token0 == weth) {
-            goldnuggetOut = _swap(token0, goldnugget, amount0, bar);
+            goldnuggetOut = _swap(token0, goldnugget, amount0, alchemybench);
         } else {
             address bridge = _bridges[token0];
             if (bridge == address(0)) {

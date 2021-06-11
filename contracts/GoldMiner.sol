@@ -56,7 +56,7 @@ contract GoldMiner is Ownable {
     uint256 public bonusEndBlock;
     // GOLN tokens created per block.
     uint256 public goldnuggetPerBlock;
-    // Bonus muliplier for early goldnugget makers.
+    // Bonus muliplier for early goldnugget smelter.
     uint256 public constant BONUS_MULTIPLIER = 10;
     // The migrator contract. It has a lot of power. Can only be set through governance (owner).
     IMigratorMiner public migrator;

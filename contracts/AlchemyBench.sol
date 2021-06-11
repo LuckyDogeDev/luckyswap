@@ -17,7 +17,7 @@ contract AlchemyBench is ERC20("AlchemyBench", "PLAN"){
         goldnugget = _goldnugget;
     }
 
-    // Enter the bar. Pay some GOLNs. Earn some shares.
+    // Enter the alchemybench. Pay some GOLNs. Earn some shares.
     // Locks GoldNugget and mints PlatinumNugget
     function enter(uint256 _amount) public {
         // Gets the amount of GoldNugget locked in the contract
@@ -37,7 +37,7 @@ contract AlchemyBench is ERC20("AlchemyBench", "PLAN"){
         goldnugget.transferFrom(msg.sender, address(this), _amount);
     }
 
-    // Leave the bar. Claim back your GOLNs.
+    // Leave the alchemybench. Claim back your GOLNs.
     // Unlocks the staked + gained GoldNugget and burns PlatinumNugget
     function leave(uint256 _share) public {
         // Gets the amount of PlatinumNugget in existence

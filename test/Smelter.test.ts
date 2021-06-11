@@ -16,8 +16,8 @@ describe("Smelter", function () {
       ["strudel", this.ERC20Mock, ["$TRDL", "$TRDL", getBigNumber("10000000")]],
       ["factory", this.UniswapV2Factory, [this.alice.address]],
     ])
-    await deploy(this, [["bar", this.AlchemyBench, [this.goldnugget.address]]])
-    await deploy(this, [["smelTer", this.Smelter, [this.factory.address, this.bar.address, this.goldnugget.address, this.weth.address]]])
+    await deploy(this, [["alchemybench", this.AlchemyBench, [this.goldnugget.address]]])
+    await deploy(this, [["smelTer", this.Smelter, [this.factory.address, this.alchemybench.address, this.goldnugget.address, this.weth.address]]])
     await deploy(this, [["exploiter", this.SmelterExploitMock, [this.smelTer.address]]])
     await createSLP(this, "goldnuggetEth", this.goldnugget, this.weth, getBigNumber(10))
     await createSLP(this, "strudelEth", this.strudel, this.weth, getBigNumber(10))
@@ -53,7 +53,7 @@ describe("Smelter", function () {
       await this.smelTer.convert(this.goldnugget.address, this.weth.address)
       expect(await this.goldnugget.balanceOf(this.smelTer.address)).to.equal(0)
       expect(await this.goldnuggetEth.balanceOf(this.smelTer.address)).to.equal(0)
-      expect(await this.goldnugget.balanceOf(this.bar.address)).to.equal("1897569270781234370")
+      expect(await this.goldnugget.balanceOf(this.alchemybench.address)).to.equal("1897569270781234370")
     })
 
     it("should convert USDC - ETH", async function () {
@@ -61,7 +61,7 @@ describe("Smelter", function () {
       await this.smelTer.convert(this.usdc.address, this.weth.address)
       expect(await this.goldnugget.balanceOf(this.smelTer.address)).to.equal(0)
       expect(await this.usdcEth.balanceOf(this.smelTer.address)).to.equal(0)
-      expect(await this.goldnugget.balanceOf(this.bar.address)).to.equal("1590898251382934275")
+      expect(await this.goldnugget.balanceOf(this.alchemybench.address)).to.equal("1590898251382934275")
     })
 
     it("should convert $TRDL - ETH", async function () {
@@ -69,7 +69,7 @@ describe("Smelter", function () {
       await this.smelTer.convert(this.strudel.address, this.weth.address)
       expect(await this.goldnugget.balanceOf(this.smelTer.address)).to.equal(0)
       expect(await this.strudelEth.balanceOf(this.smelTer.address)).to.equal(0)
-      expect(await this.goldnugget.balanceOf(this.bar.address)).to.equal("1590898251382934275")
+      expect(await this.goldnugget.balanceOf(this.alchemybench.address)).to.equal("1590898251382934275")
     })
 
     it("should convert USDC - GOLN", async function () {
@@ -77,7 +77,7 @@ describe("Smelter", function () {
       await this.smelTer.convert(this.usdc.address, this.goldnugget.address)
       expect(await this.goldnugget.balanceOf(this.smelTer.address)).to.equal(0)
       expect(await this.goldnuggetUSDC.balanceOf(this.smelTer.address)).to.equal(0)
-      expect(await this.goldnugget.balanceOf(this.bar.address)).to.equal("1897569270781234370")
+      expect(await this.goldnugget.balanceOf(this.alchemybench.address)).to.equal("1897569270781234370")
     })
 
     it("should convert using standard ETH path", async function () {
@@ -85,7 +85,7 @@ describe("Smelter", function () {
       await this.smelTer.convert(this.dai.address, this.weth.address)
       expect(await this.goldnugget.balanceOf(this.smelTer.address)).to.equal(0)
       expect(await this.daiEth.balanceOf(this.smelTer.address)).to.equal(0)
-      expect(await this.goldnugget.balanceOf(this.bar.address)).to.equal("1590898251382934275")
+      expect(await this.goldnugget.balanceOf(this.alchemybench.address)).to.equal("1590898251382934275")
     })
 
     it("converts MIC/USDC using more complex path", async function () {
@@ -95,7 +95,7 @@ describe("Smelter", function () {
       await this.smelTer.convert(this.mic.address, this.usdc.address)
       expect(await this.goldnugget.balanceOf(this.smelTer.address)).to.equal(0)
       expect(await this.micUSDC.balanceOf(this.smelTer.address)).to.equal(0)
-      expect(await this.goldnugget.balanceOf(this.bar.address)).to.equal("1590898251382934275")
+      expect(await this.goldnugget.balanceOf(this.alchemybench.address)).to.equal("1590898251382934275")
     })
 
     it("converts DAI/USDC using more complex path", async function () {
@@ -105,7 +105,7 @@ describe("Smelter", function () {
       await this.smelTer.convert(this.dai.address, this.usdc.address)
       expect(await this.goldnugget.balanceOf(this.smelTer.address)).to.equal(0)
       expect(await this.daiUSDC.balanceOf(this.smelTer.address)).to.equal(0)
-      expect(await this.goldnugget.balanceOf(this.bar.address)).to.equal("1590898251382934275")
+      expect(await this.goldnugget.balanceOf(this.alchemybench.address)).to.equal("1590898251382934275")
     })
 
     it("converts DAI/MIC using two step path", async function () {
@@ -115,7 +115,7 @@ describe("Smelter", function () {
       await this.smelTer.convert(this.dai.address, this.mic.address)
       expect(await this.goldnugget.balanceOf(this.smelTer.address)).to.equal(0)
       expect(await this.daiMIC.balanceOf(this.smelTer.address)).to.equal(0)
-      expect(await this.goldnugget.balanceOf(this.bar.address)).to.equal("1200963016721363748")
+      expect(await this.goldnugget.balanceOf(this.alchemybench.address)).to.equal("1200963016721363748")
     })
 
     it("reverts if it loops back", async function () {
@@ -139,7 +139,7 @@ describe("Smelter", function () {
       await expect(this.smelTer.convert(this.mic.address, this.usdc.address)).to.be.revertedWith("Smelter: Cannot convert")
       expect(await this.goldnugget.balanceOf(this.smelTer.address)).to.equal(0)
       expect(await this.micUSDC.balanceOf(this.smelTer.address)).to.equal(getBigNumber(1))
-      expect(await this.goldnugget.balanceOf(this.bar.address)).to.equal(0)
+      expect(await this.goldnugget.balanceOf(this.alchemybench.address)).to.equal(0)
     })
   })
 
@@ -150,7 +150,7 @@ describe("Smelter", function () {
       await this.smelTer.convertMultiple([this.dai.address, this.goldnugget.address], [this.weth.address, this.weth.address])
       expect(await this.goldnugget.balanceOf(this.smelTer.address)).to.equal(0)
       expect(await this.daiEth.balanceOf(this.smelTer.address)).to.equal(0)
-      expect(await this.goldnugget.balanceOf(this.bar.address)).to.equal("3186583558687783097")
+      expect(await this.goldnugget.balanceOf(this.alchemybench.address)).to.equal("3186583558687783097")
     })
   })
 })

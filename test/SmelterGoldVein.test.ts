@@ -20,11 +20,11 @@ describe("GoldVeinSmelter", function () {
       ["factory", this.UniswapV2Factory, [this.alice.address]],
     ])
     // Deploy GoldNugget and Gold Vein contracts
-    await deploy(this, [["bar", this.AlchemyBench, [this.goldnugget.address]]])
+    await deploy(this, [["alchemybench", this.AlchemyBench, [this.goldnugget.address]]])
     await deploy(this, [["alp", this.AlpineV1, [this.weth.address]]])
     await deploy(this, [["goldveinMaster", this.GoldVeinPairMediumRiskV1, [this.alp.address]]])
-    await deploy(this, [["goldveinMaker", this.SmelterGoldVein, [this.factory.address, this.bar.address, this.alp.address, this.goldnugget.address, this.weth.address, this.factory.pairCodeHash()]]])
-    await deploy(this, [["exploiter", this.SmelterGoldVeinExploitMock, [this.goldveinMaker.address]]])
+    await deploy(this, [["goldveinSmelter", this.SmelterGoldVein, [this.factory.address, this.alchemybench.address, this.alp.address, this.goldnugget.address, this.weth.address, this.factory.pairCodeHash()]]])
+    await deploy(this, [["exploiter", this.SmelterGoldVeinExploitMock, [this.goldveinSmelter.address]]])
     await deploy(this, [["oracle", this.PeggedOracleV1]])
     // Create SLPs
     await createSLP(this, "goldnuggetEth", this.goldnugget, this.weth, getBigNumber(10))
@@ -35,8 +35,8 @@ describe("GoldVeinSmelter", function () {
     await createSLP(this, "goldnuggetUSDC", this.goldnugget, this.usdc, getBigNumber(10))
     await createSLP(this, "daiUSDC", this.dai, this.usdc, getBigNumber(10))
     await createSLP(this, "daiMIC", this.dai, this.mic, getBigNumber(10))
-    // Set Gold Vein fees to Maker
-    await this.goldveinMaster.setFeeTo(this.goldveinMaker.address)
+    // Set Gold Vein fees to Smelter
+    await this.goldveinMaster.setFeeTo(this.goldveinSmelter.address)
     // Whitelist Gold Vein on Alp
     await this.alp.whitelistMasterContract(this.goldveinMaster.address, true)
     // Approve and make Alp token deposits
@@ -62,31 +62,31 @@ describe("GoldVeinSmelter", function () {
 
   describe("setBridge", function () {
     it("only allows the owner to set bridge", async function () {
-      await expect(this.goldveinMaker.connect(this.bob).setBridge(this.goldnugget.address, this.weth.address, { from: this.bob.address })).to.be.revertedWith("Ownable: caller is not the owner")
+      await expect(this.goldveinSmelter.connect(this.bob).setBridge(this.goldnugget.address, this.weth.address, { from: this.bob.address })).to.be.revertedWith("Ownable: caller is not the owner")
     })
 
     it("does not allow to set bridge for GoldNugget", async function () {
-      await expect(this.goldveinMaker.setBridge(this.goldnugget.address, this.weth.address)).to.be.revertedWith("Maker: Invalid bridge")
+      await expect(this.goldveinSmelter.setBridge(this.goldnugget.address, this.weth.address)).to.be.revertedWith("Smelter: Invalid bridge")
     })
 
     it("does not allow to set bridge for WETH", async function () {
-      await expect(this.goldveinMaker.setBridge(this.weth.address, this.goldnugget.address)).to.be.revertedWith("Maker: Invalid bridge")
+      await expect(this.goldveinSmelter.setBridge(this.weth.address, this.goldnugget.address)).to.be.revertedWith("Smelter: Invalid bridge")
     })
 
     it("does not allow to set bridge to itself", async function () {
-      await expect(this.goldveinMaker.setBridge(this.dai.address, this.dai.address)).to.be.revertedWith("Maker: Invalid bridge")
+      await expect(this.goldveinSmelter.setBridge(this.dai.address, this.dai.address)).to.be.revertedWith("Smelter: Invalid bridge")
     })
 
     it("emits correct event on bridge", async function () {
-      await expect(this.goldveinMaker.setBridge(this.dai.address, this.goldnugget.address))
-        .to.emit(this.goldveinMaker, "LogBridgeSet")
+      await expect(this.goldveinSmelter.setBridge(this.dai.address, this.goldnugget.address))
+        .to.emit(this.goldveinSmelter, "LogBridgeSet")
         .withArgs(this.dai.address, this.goldnugget.address)
     })
   })
 
   describe("convert", function () {
     it("reverts if caller is not EOA", async function () {
-      await expect(this.exploiter.convert(this.goldnugget.address)).to.be.revertedWith("Maker: Must use EOA")
+      await expect(this.exploiter.convert(this.goldnugget.address)).to.be.revertedWith("Smelter: Must use EOA")
     })
   })
 })

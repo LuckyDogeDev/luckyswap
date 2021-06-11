@@ -43,10 +43,10 @@ task("erc20:approve", "ERC20 approve")
 .addOptionalParam("deadline", MaxUint256)
 .setAction(async function ({ token, spender, deadline }, { ethers: { getNamedSigner } }, runSuper) {
   const erc20 = await ethers.getContractFactory("UniswapV2ERC20")
-  
-  const slp = erc20.attach(token)   
-  
-  await (await slp.connect(await getNamedSigner("dev")).approve(spender, deadline)).wait()    
+
+  const slp = erc20.attach(token)
+
+  await (await slp.connect(await getNamedSigner("dev")).approve(spender, deadline)).wait()
 });
 
 task("factory:set-fee-to", "Factory set fee to")
@@ -54,7 +54,7 @@ task("factory:set-fee-to", "Factory set fee to")
 .setAction(async function ({ feeTo }, { ethers: { getNamedSigner } }, runSuper) {
   const factory = await ethers.getContract("UniswapV2Factory")
   console.log(`Setting factory feeTo to ${feeTo} address`)
-  await (await factory.connect(await getNamedSigner('dev')).setFeeTo(feeTo)).wait() 
+  await (await factory.connect(await getNamedSigner('dev')).setFeeTo(feeTo)).wait()
 });
 
 // TODO: Swap?
@@ -73,7 +73,7 @@ task("router:add-liquidity", "Router add liquidity")
   const router = await ethers.getContract("UniswapV2Router")
   await run("erc20:approve", { token: tokenA, spender: router.address })
   await run("erc20:approve", { token: tokenB, spender: router.address })
-  await (await router.connect(await getNamedSigner("dev")).addLiquidity(tokenA, tokenB, tokenADesired, tokenBDesired, tokenAMinimum, tokenBMinimum, to, deadline)).wait()    
+  await (await router.connect(await getNamedSigner("dev")).addLiquidity(tokenA, tokenB, tokenADesired, tokenBDesired, tokenAMinimum, tokenBMinimum, to, deadline)).wait()
 });
 
 // TODO: Test
@@ -87,7 +87,7 @@ task("router:add-liquidity-eth", "Router add liquidity eth")
 .setAction(async function ({ token, tokenDesired, tokenMinimum, ethMinimum, to, deadline }, { ethers: { getNamedSigner } }, runSuper) {
   const router = await ethers.getContract("UniswapV2Router")
   await run("erc20:approve", { token, spender: router.address })
-  await (await router.connect(await getNamedSigner("dev")).addLiquidityETH(token, tokenDesired, tokenMinimum, ethMinimum, to, deadline)).wait()    
+  await (await router.connect(await getNamedSigner("dev")).addLiquidityETH(token, tokenDesired, tokenMinimum, ethMinimum, to, deadline)).wait()
 });
 
 task("migrate", "Migrates liquidity from Uniswap to LuckySwap")
@@ -128,36 +128,35 @@ task("goldminer:withdraw", "GoldMiner withdraw")
   await (await goldMiner.connect(await getNamedSigner("dev")).withdraw(pid, amount)).wait()
 });
 
-task("bar:enter", "AlchemyBench enter")
+task("alchemybench:enter", "AlchemyBench enter")
 .addParam("amount", "Amount")
 .setAction(async function ({ amount }, { ethers: { getNamedSigner } }, runSuper) {
   const goldnugget = await ethers.getContract("GoldNugget")
 
-  const bar = await ethers.getContract("AlchemyBench")
+  const alchemybench = await ethers.getContract("AlchemyBench")
 
-  await run("erc20:approve", { token: goldnugget.address, spender: bar.address })
-  
-  await (await bar.connect(await getNamedSigner("dev")).enter(amount)).wait()
+  await run("erc20:approve", { token: goldnugget.address, spender: alchemybench.address })
+
+  await (await alchemybench.connect(await getNamedSigner("dev")).enter(amount)).wait()
 });
 
-task("bar:leave", "AlchemyBench leave")
+task("alchemybench:leave", "AlchemyBench leave")
 .addParam("amount", "Amount")
 .setAction(async function ({ amount }, { ethers: { getNamedSigner } }, runSuper) {
   const goldnugget = await ethers.getContract("GoldNugget")
 
-  const bar = await ethers.getContract("AlchemyBench")
+  const alchemybench = await ethers.getContract("AlchemyBench")
 
-  await run("erc20:approve", { token: goldnugget.address, spender: bar.address })
-  
-  await (await bar.connect(await getNamedSigner("dev")).leave(amount)).wait()
+  await run("erc20:approve", { token: goldnugget.address, spender: alchemybench.address })
+
+  await (await alchemybench.connect(await getNamedSigner("dev")).leave(amount)).wait()
 });
 
-task("maker:serve", "AlchemyBench serve")
+task("smelter:serve", "AlchemyBench serve")
 .addParam("a", "Token A")
 .addParam("b", "Token B")
 .setAction(async function ({ a, b }, { ethers: { getNamedSigner } }, runSuper) {
-  const maker = await ethers.getContract("Smelter")
+  const smelter = await ethers.getContract("Smelter")
 
-  await (await maker.connect(await getNamedSigner("dev")).convert(a, b, { gasLimitgasLimit: 5198000 })).wait()
+  await (await smelter.connect(await getNamedSigner("dev")).convert(a, b, { gasLimitgasLimit: 5198000 })).wait()
 });
-

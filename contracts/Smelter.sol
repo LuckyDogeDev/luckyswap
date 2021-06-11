@@ -23,7 +23,7 @@ contract Smelter is Ownable {
     IUniswapV2Factory public immutable factory;
     //0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac
     // V1 - V5: OK
-    address public immutable bar;
+    address public immutable alchemybench;
     //0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272
     // V1 - V5: OK
     address private immutable goldnugget;
@@ -49,12 +49,12 @@ contract Smelter is Ownable {
 
     constructor(
         address _factory,
-        address _bar,
+        address _alchemybench,
         address _goldnugget,
         address _weth
     ) public {
         factory = IUniswapV2Factory(_factory);
-        bar = _bar;
+        alchemybench = _alchemybench;
         goldnugget = _goldnugget;
         weth = _weth;
     }
@@ -93,7 +93,7 @@ contract Smelter is Ownable {
 
     // F1 - F10: OK
     // F3: _convert is separate to save gas by only checking the 'onlyEOA' modifier once in case of convertMultiple
-    // F6: There is an exploit to add lots of GOLN to the bar, run convert, then remove the GOLN again.
+    // F6: There is an exploit to add lots of GOLN to the alchemybench, run convert, then remove the GOLN again.
     //     As the size of the AlchemyBench has grown, this requires large amounts of funds and isn't super profitable anymore
     //     The onlyEOA modifier prevents this being done with a flash loan.
     // C1 - C24: OK
@@ -156,7 +156,7 @@ contract Smelter is Ownable {
         if (token0 == token1) {
             uint256 amount = amount0.add(amount1);
             if (token0 == goldnugget) {
-                IERC20(goldnugget).safeTransfer(bar, amount);
+                IERC20(goldnugget).safeTransfer(alchemybench, amount);
                 goldnuggetOut = amount;
             } else if (token0 == weth) {
                 goldnuggetOut = _toGOLN(weth, amount);
@@ -167,11 +167,11 @@ contract Smelter is Ownable {
             }
         } else if (token0 == goldnugget) {
             // eg. GOLN - ETH
-            IERC20(goldnugget).safeTransfer(bar, amount0);
+            IERC20(goldnugget).safeTransfer(alchemybench, amount0);
             goldnuggetOut = _toGOLN(token1, amount1).add(amount0);
         } else if (token1 == goldnugget) {
             // eg. USDT - GOLN
-            IERC20(goldnugget).safeTransfer(bar, amount1);
+            IERC20(goldnugget).safeTransfer(alchemybench, amount1);
             goldnuggetOut = _toGOLN(token0, amount0).add(amount1);
         } else if (token0 == weth) {
             // eg. ETH - USDC
@@ -259,6 +259,6 @@ contract Smelter is Ownable {
         returns (uint256 amountOut)
     {
         // X1 - X5: OK
-        amountOut = _swap(token, goldnugget, amountIn, bar);
+        amountOut = _swap(token, goldnugget, amountIn, alchemybench);
     }
 }
