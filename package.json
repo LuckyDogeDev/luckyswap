@@ -1,6 +1,6 @@
 {
   "name": "@luckyfinance/core",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "license": "MIT",
   "types": "./types/index.ts",
   "description": "Core contracts for the LuckySwap protocol",
