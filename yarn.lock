@@ -447,19 +447,6 @@
     "@ethersproject/properties" "^5.0.7"
     "@ethersproject/strings" "^5.0.8"
 
-"@luckyfinance/sdk@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@luckyfinance/sdk/-/sdk-3.1.0.tgz#3cc550c92526d28a1e78a7577095b997a7e94a1f"
-  integrity sha512-z+hRFrI3CmEMXMYifALXwTTjR/e7Df/DEeQ+ThcPGM6mqafpsuEJSSqtPVbgQpuKbtpOdc254zqtpPonzI//Mw==
-  dependencies:
-    "@uniswap/v2-core" "^1.0.0"
-    big.js "^5.2.2"
-    decimal.js-light "^2.5.0"
-    jsbi "^3.1.1"
-    tiny-invariant "^1.1.0"
-    tiny-warning "^1.0.3"
-    toformat "^2.0.0"
-
 "@nodelib/fs.scandir@2.1.4":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.4.tgz#d4b3549a5db5de2683e0c1071ab4f140904bbf69"
@@ -654,6 +641,19 @@
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/@solidity-parser/parser/-/parser-0.11.1.tgz#fa840af64840c930f24a9c82c08d4a092a068add"
   integrity sha512-H8BSBoKE8EubJa0ONqecA2TviT3TnHeC4NpgnAHSUiuhZoQBfPB4L2P9bs8R6AoTW10Endvh3vc+fomVMIDIYQ==
+
+"@luckyfinance/sdk@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@luckyfinance/sdk/-/sdk-4.1.1.tgz#af975ff1900c7adb851776a0739976cb25c4701e"
+  integrity sha512-hOc5QLh8LkcJPV42F+5MvTuakX5/k5xjJNEEaq5AF51ph7kG6MRAtqy0fiO8510fef14iNVA1zByeyH0uDAa9w==
+  dependencies:
+    "@uniswap/v2-core" "^1.0.0"
+    big.js "^5.2.2"
+    decimal.js-light "^2.5.0"
+    jsbi "^3.1.1"
+    tiny-invariant "^1.1.0"
+    tiny-warning "^1.0.3"
+    toformat "^2.0.0"
 
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
