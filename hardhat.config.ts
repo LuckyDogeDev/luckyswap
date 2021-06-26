@@ -19,8 +19,7 @@ import { HardhatUserConfig } from "hardhat/types"
 import { removeConsoleLog } from "hardhat-preprocessor"
 
 const accounts = {
-  mnemonic: process.env.MNEMONIC || "test test test test test test test test test test test junk",
-  // accountsBalance: "990000000000000000000",
+  mnemonic: process.env.MNEMONIC || "",
 }
 
 const config: HardhatUserConfig = {
