@@ -27,7 +27,7 @@ contract Smelter is Ownable {
     //0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272
     // V1 - V5: OK
     address private immutable goldnugget;
-    //0x6B3595068778DD592e39A122f4f5a5cF09C90fE2
+    //0xc6D69475f115F61B1e8C4e78c20C49201c869DB4
     // V1 - V5: OK
     address private immutable weth;
     //0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2

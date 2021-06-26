@@ -49,7 +49,7 @@ contract GoldMinerV2 is BoringOwnable, BoringBatchable {
     /// @notice Address of GOLN contract.
     IERC20 public immutable GOLN;
     /// @notice The index of MCV2 master pool in MCV1.
-    uint256 public immutable MASTER_PID;
+    uint256 public immutable GOLD_PID;
     // @notice The migrator contract. It has a lot of power. Can only be set through governance (owner).
     IMigratorMiner public migrator;
 
@@ -79,11 +79,11 @@ contract GoldMinerV2 is BoringOwnable, BoringBatchable {
 
     /// @param _GOLD_MINER The LuckySwap MCV1 contract address.
     /// @param _goldnugget The GOLN token contract address.
-    /// @param _MASTER_PID The pool ID of the dummy token on the base MCV1 contract.
-    constructor(IGoldMiner _GOLD_MINER, IERC20 _goldnugget, uint256 _MASTER_PID) public {
+    /// @param _GOLD_PID The pool ID of the dummy token on the base MCV1 contract.
+    constructor(IGoldMiner _GOLD_MINER, IERC20 _goldnugget, uint256 _GOLD_PID) public {
         GOLD_MINER = _GOLD_MINER;
         GOLN = _goldnugget;
-        MASTER_PID = _MASTER_PID;
+        GOLD_PID = _GOLD_PID;
     }
 
     /// @notice Deposits a dummy token to `GOLD_MINER` MCV1. This is required because MCV1 holds the minting rights for GOLN.
@@ -95,7 +95,7 @@ contract GoldMinerV2 is BoringOwnable, BoringBatchable {
         require(balance != 0, "GoldMinerV2: Balance must exceed 0");
         dummyToken.safeTransferFrom(msg.sender, address(this), balance);
         dummyToken.approve(address(GOLD_MINER), balance);
-        GOLD_MINER.deposit(MASTER_PID, balance);
+        GOLD_MINER.deposit(GOLD_PID, balance);
         emit LogInit();
     }
 
@@ -182,7 +182,7 @@ contract GoldMinerV2 is BoringOwnable, BoringBatchable {
     /// @notice Calculates and returns the `amount` of GOLN per block.
     function goldnuggetPerBlock() public view returns (uint256 amount) {
         amount = uint256(GOLDMINER_GOLN_PER_BLOCK)
-            .mul(GOLD_MINER.poolInfo(MASTER_PID).allocPoint) / GOLD_MINER.totalAllocPoint();
+            .mul(GOLD_MINER.poolInfo(GOLD_PID).allocPoint) / GOLD_MINER.totalAllocPoint();
     }
 
     /// @notice Update reward variables of the given pool.
@@ -302,9 +302,9 @@ contract GoldMinerV2 is BoringOwnable, BoringBatchable {
         emit Harvest(msg.sender, pid, _pendingGoldNugget);
     }
 
-    /// @notice Harvests GOLN from `GOLD_MINER` MCV1 and pool `MASTER_PID` to this MCV2 contract.
+    /// @notice Harvests GOLN from `GOLD_MINER` MCV1 and pool `GOLD_PID` to this MCV2 contract.
     function harvestFromGoldMiner() public {
-        GOLD_MINER.deposit(MASTER_PID, 0);
+        GOLD_MINER.deposit(GOLD_PID, 0);
     }
 
     /// @notice Withdraw without caring about rewards. EMERGENCY ONLY.

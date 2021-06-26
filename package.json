@@ -1,6 +1,6 @@
 {
   "name": "@luckyfinance/core",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "license": "MIT",
   "types": "./types/index.ts",
   "description": "Core contracts for the LuckySwap protocol",
@@ -63,7 +63,7 @@
     "@nomiclabs/hardhat-solhint": "^2.0.0",
     "@nomiclabs/hardhat-waffle": "^2.0.0",
     "@openzeppelin/contracts": "^3.1.0",
-    "@luckyfinance/sdk": "3.0.2",
+    "@luckyfinance/sdk": "^3.1.0",
     "@tenderly/hardhat-tenderly": "^1.0.0",
     "@typechain/ethers-v5": "^5.0.0",
     "@types/mocha": "^8.2.1",

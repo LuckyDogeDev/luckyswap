@@ -31,7 +31,7 @@ module.exports = async function (
 
   const nonce = await token.connect(dev).nonces(dev.address)
 
-  const goldnuggetRoll = await ethers.getContract("Ingot")
+  const goldnuggetIngot = await ethers.getContract("Ingot")
 
   const chainId = await getChainId()
 
@@ -40,7 +40,7 @@ module.exports = async function (
     chainId,
     {
       owner: dev.address,
-      spender: goldnuggetRoll.address,
+      spender: goldnuggetIngot.address,
       value: await token.balanceOf(dev.address),
     },
     nonce,
@@ -54,7 +54,7 @@ module.exports = async function (
 
   console.log({ v, r: hexlify(r), s: hexlify(s) })
 
-  const migrateTx = await goldnuggetRoll
+  const migrateTx = await goldnuggetIngot
     .connect(dev)
     .migrateWithPermit(
       tokenA,

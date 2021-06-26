@@ -39,7 +39,7 @@ contract SmelterGoldVein is Ownable {
     IAlpineWithdraw private immutable alPine;
     //0xF5BCE5077908a1b7370B9ae04AdC565EBd643966
     address private immutable goldnugget;
-    //0x6B3595068778DD592e39A122f4f5a5cF09C90fE2
+    //0xc6D69475f115F61B1e8C4e78c20C49201c869DB4
     address private immutable weth;
     //0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
     bytes32 private immutable pairCodeHash;
